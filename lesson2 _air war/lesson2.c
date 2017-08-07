@@ -12,7 +12,7 @@
 #define numOfBullets 10
 #define difficulty 5
 
-
+/* the shape of the aricrafts */
 char airCraft[][3][4]={
     {
         " * ",
