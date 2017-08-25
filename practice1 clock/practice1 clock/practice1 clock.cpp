@@ -37,6 +37,8 @@ int main() {
     }
 
     closegraph();
+
+    return 0;
 }
 
 
@@ -57,6 +59,7 @@ void drawWidget(void) {
     setlinecolor(0xdddddd);
     setlinestyle(PS_SOLID, 4, NULL);
 
+    /* draw the dial gauge of the clock */
     for (i = 0; i < 12; i++) {
         widget1.rho = RADIUS;
         widget1.theta = widget2.theta = i*PI / 6;
@@ -88,16 +91,18 @@ void drawHands(void) {
 
     GetLocalTime(&time);
 
+    /* the first parentheses calculate the position of the hands
+       And the second one calculate the accurate position */
     H1.rho = RADIUS;
-    H1.theta = H2.theta = time.wHour % 12 * PI / 6 - PI / 4;
+    H1.theta = H2.theta = (time.wHour % 12 * PI / 6 - PI / 2) + (time.wMinute * PI / 360); //360 for 2PI / 60 / 12
     H2.rho = RADIUS - lengthH;
 
     M1.rho = RADIUS;
-    M1.theta = M2.theta = time.wMinute * PI / 30 - PI / 4;
+    M1.theta = M2.theta = (time.wMinute * PI / 30 - PI / 2) + (time.wSecond * PI / 1800); //1800 for 2PI / 60 / 12 / 5 
     M2.rho = RADIUS - lengthM;
 
     S1.rho = RADIUS;
-    S1.theta = S2.theta = time.wSecond * PI / 30 - PI / 4;
+    S1.theta = S2.theta = time.wSecond * PI / 30 - PI / 2;
     S2.rho = RADIUS - lengthS;
 
     H1O = polarToOrth(H1, CEN);
@@ -107,6 +112,9 @@ void drawHands(void) {
     S1O = polarToOrth(S1, CEN);
     S2O = polarToOrth(S2, CEN);
 
+
+    /* keep the hands for a second
+       and then clear the hands */
     for (i = 0; i < 2; i++) {
         setlinecolor(0xdddddd);
         setlinestyle(PS_SOLID, 10, NULL);
